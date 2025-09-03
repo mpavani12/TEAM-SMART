@@ -1,1 +1,246 @@
-file:///C:/Users/admin/Desktop/New%20folder/TEAMSMART.HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Monitoring and Authentication</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f7f9;
+    }
+
+    header {
+      background: #1e3d59;
+      color: #fff;
+      text-align: center;
+      padding: 15px 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 30px auto;
+    }
+
+    .box {
+      background: #fff;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #1e3d59;
+    }
+
+    input, select {
+      width: 95%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #1e3d59;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #163246;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #1e3d59;
+      color: white;
+    }
+
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+
+    .failed {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Activity Monitoring and Authentication</h1>
+  </header>
+
+  <div class="container">
+    <!-- Authentication -->
+    <div class="box" id="login-box">
+      <h2>User Authentication</h2>
+      <form id="loginForm">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" placeholder="Enter Username" required><br>
+        
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" placeholder="Enter Password" required><br>
+        
+        <button type="submit">Login</button>
+      </form>
+      <p id="message"></p>
+    </div>
+
+    <!-- Tracking Dashboard -->
+    <div class="box" id="tracking-box">
+      <h2>Logistics Tracking Dashboard</h2>
+      <table id="trackingTable">
+        <tr>
+          <th>Type</th>
+          <th>ID</th>
+          <th>Location</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Vehicle</td>
+          <td>VH-102</td>
+          <td>Hyderabad</td>
+          <td>In Transit</td>
+        </tr>
+        <tr>
+          <td>Warehouse</td>
+          <td>WH-22</td>
+          <td>Mumbai</td>
+          <td>Operational</td>
+        </tr>
+        <tr>
+          <td>Parcel</td>
+          <td>PC-5567</td>
+          <td>Delhi</td>
+          <td>Delivered</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Add New Record -->
+    <div class="box">
+      <h2>Add New Tracking Record</h2>
+      <form id="addForm">
+        <label for="type">Type:</label>
+        <select id="type" required>
+          <option value="">--Select--</option>
+          <option value="Vehicle">Vehicle</option>
+          <option value="Warehouse">Warehouse</option>
+          <option value="Parcel">Parcel</option>
+        </select><br>
+
+        <label for="id">ID:</label>
+        <input type="text" id="id" placeholder="Enter ID (e.g., VH-500)" required><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="Enter Location" required><br>
+
+        <label for="status">Status:</label>
+        <input type="text" id="status" placeholder="Enter Status" required><br>
+
+        <button type="submit">Add Record</button>
+      </form>
+    </div>
+
+    <!-- Activity Tracking -->
+    <div class="box" id="activity-box">
+      <h2>User Activity Log</h2>
+      <table id="activityTable">
+        <tr>
+          <th>User</th>
+          <th>Activity</th>
+          <th>Timestamp</th>
+          <th>Status</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const addForm = document.getElementById("addForm");
+    const activityTable = document.getElementById("activityTable");
+    const trackingTable = document.getElementById("trackingTable");
+    const message = document.getElementById("message");
+
+    // Demo credentials
+    const validUser = "admin";
+    const validPass = "1234";
+
+    // Handle login attempts
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const now = new Date();
+      const timestamp = now.toLocaleString();
+
+      let status = "";
+      let activity = "Login Attempt";
+
+      if (username === validUser && password === validPass) {
+        status = "Successful";
+        message.style.color = "green";
+        message.textContent = "✅ Login successful!";
+      } else {
+        status = "Failed";
+        message.style.color = "red";
+        message.textContent = "❌ Invalid username or password!";
+      }
+
+      // Add record to activity log
+      const row = activityTable.insertRow(-1);
+      row.insertCell(0).textContent = username;
+      row.insertCell(1).textContent = activity;
+      row.insertCell(2).textContent = timestamp;
+      row.insertCell(3).innerHTML = status === "Successful"
+        ? `<span class="success">${status}</span>`
+        : `<span class="failed">${status}</span>`;
+    });
+
+    // Handle new record addition
+    addForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const type = document.getElementById("type").value;
+      const id = document.getElementById("id").value;
+      const location = document.getElementById("location").value;
+      const status = document.getElementById("status").value;
+
+      // Add record to tracking table
+      const row = trackingTable.insertRow(-1);
+      row.insertCell(0).textContent = type;
+      row.insertCell(1).textContent = id;
+      row.insertCell(2).textContent = location;
+      row.insertCell(3).textContent = status;
+
+      // Clear form
+      addForm.reset();
+    });
+  </script>
+</body>
+</html>
